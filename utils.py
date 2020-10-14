@@ -15,7 +15,23 @@ def f1_score(real_labels, predicted_labels):
     :return: float
     """
     assert len(real_labels) == len(predicted_labels)
-    raise NotImplementedError
+    tp = 0
+    fp = 0
+    tn = 0
+    fn = 0
+    for i in range(len(real_labels)):
+        if predicted_labels[i] == 1:
+            if real_labels[i] == 1:
+                tp+=1
+            else:
+                fp+=1
+        else:
+            if real_labels[i] == 0:
+                tn += 1
+            else:
+                fn+=1
+    return (tp/(tp+((1/2.0)*(fp+fn))))
+    # raise NotImplementedError
 
 
 class Distances:
@@ -37,7 +53,7 @@ class Distances:
         sub = sub**3
         out = (np.sum(sub))**(1/3.0)
         return out
-        raise NotImplementedError
+        # raise NotImplementedError
 
     @staticmethod
     # TODO
@@ -51,7 +67,7 @@ class Distances:
         point2 = np.asarray(point2)
         out = (np.sum(np.square(np.subtract(point1,point2))))**(1/2.0)
         return out
-        raise NotImplementedError
+        # raise NotImplementedError
 
     @staticmethod
     # TODO
@@ -70,7 +86,7 @@ class Distances:
         else:
             n = np.sum(point1*point2)
             return (1- (n/(l2_1*l2_2)))
-        raise NotImplementedError
+        # raise NotImplementedError
 
 
 
@@ -150,8 +166,16 @@ class NormalizationScaler:
         :param features: List[List[float]]
         :return: List[List[float]]
         """
-        raise NotImplementedError
-
+        out = list()
+        for feature in features:
+            feature = np.asarray(feature)
+            l2_feature = (np.sum(np.square(feature))) ** (1 / 2.0)
+            if l2_feature==0:
+                out.append(feature)
+            else:
+                out.append(feature/l2_feature)
+        return out
+        # raise NotImplementedError
 
 class MinMaxScaler:
     def __init__(self):
@@ -173,4 +197,14 @@ class MinMaxScaler:
         :param features: List[List[float]]
         :return: List[List[float]]
         """
-        raise NotImplementedError
+        out = []
+        for feature in features:
+            feature = np.asarray(feature)
+            amax = np.amax(feature)
+            amin = np.amin(feature)
+            if amin==amax:
+                out.append(feature*0)
+            else:
+                out.append((feature-amin)/(amax-amin))
+        return out
+        # raise NotImplementedError
