@@ -118,10 +118,25 @@ class HyperparameterTuner:
         """
         
         # You need to assign the final values to these variables
-        self.best_k = None
-        self.best_distance_function = None
-        self.best_model = None
-        raise NotImplementedError
+        best_k = None
+        best_distance_function = None
+        best_model = None
+        last_best_f1 = 0
+        for k in range(1,30,2):
+            for key in distance_funcs:
+                model = KNN(k, distance_funcs[key])
+                model.train(x_train, y_train)
+                predictions = model.predict(x_val)
+                f1 = f1_score(y_val, predictions)
+                if f1>last_best_f1:
+                    best_k = k
+                    best_distance_function = distance_funcs[key]
+                    best_model = model
+
+        self.best_k = best_k
+        self.best_distance_function = best_distance_function
+        self.best_model = best_model
+        # raise NotImplementedError
 
     # TODO: find parameters with the best f1 score on validation dataset, with normalized data
     def tuning_with_scaling(self, distance_funcs, scaling_classes, x_train, y_train, x_val, y_val):
@@ -142,6 +157,12 @@ class HyperparameterTuner:
         """
         
         # You need to assign the final values to these variables
+        best_k = None
+        best_distance_function = None
+        best_scaler = None
+        best_model = None
+        last_best_f1 = 0
+        
         self.best_k = None
         self.best_distance_function = None
         self.best_scaler = None
