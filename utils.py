@@ -30,7 +30,7 @@ def f1_score(real_labels, predicted_labels):
                 tn += 1
             else:
                 fn+=1
-    return (tp/(tp+((1/2.0)*(fp+fn))))
+    return ((tp*1.0)/(tp+((1/2.0)*(fp+fn))))
     # raise NotImplementedError
 
 
@@ -65,8 +65,7 @@ class Distances:
         """
         point1 = np.asarray(point1)
         point2 = np.asarray(point2)
-        out = (np.sum(np.square(np.subtract(point1,point2))))**(1/2.0)
-        return out
+        return np.linalg.norm(np.subtract(point1, point2), 2)
         # raise NotImplementedError
 
     @staticmethod
@@ -79,8 +78,8 @@ class Distances:
        """
         point1 = np.asarray(point1)
         point2 = np.asarray(point2)
-        l2_1 = (np.sum(np.square(point1)))**(1/2.0)
-        l2_2 = (np.sum(np.square(point2)))**(1/2.0)
+        l2_1 = np.linalg.norm(point1, 2)
+        l2_2 = np.linalg.norm(point2, 2)
         if l2_1==0 or l2_2==0:
             return 1
         else:
@@ -169,7 +168,7 @@ class NormalizationScaler:
         out = list()
         for feature in features:
             feature = np.asarray(feature)
-            l2_feature = (np.sum(np.square(feature))) ** (1 / 2.0)
+            l2_feature = np.linalg.norm(feature, 2)
             if l2_feature==0:
                 out.append(feature)
             else:

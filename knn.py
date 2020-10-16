@@ -30,7 +30,7 @@ class KNN:
         """
         self.features = features
         self.labels = labels
-        raise NotImplementedError
+        # raise NotImplementedError
 
     # TODO: find KNN of one point
     def get_k_neighbors(self, point):
@@ -41,7 +41,18 @@ class KNN:
         :param point: List[float]
         :return:  List[int]
         """
-        raise NotImplementedError
+        out = list()
+        n_tuples = list()
+        n_distance = list()
+        for i in range(len(self.features)):
+            dist = self.distance_function(self.features[i], point)
+            n_tuples.append((dist, self.labels[i]))
+        n_tuples.sort()
+        k_tuples = n_tuples[:self.k]
+        for item in k_tuples:
+            out.append(item[1])
+        return out
+        # raise NotImplementedError
 
     # TODO: predict labels of a list of points
     def predict(self, features):
@@ -54,7 +65,13 @@ class KNN:
         :param features: List[List[float]]
         :return: List[int]
         """
-        raise NotImplementedError
+        out = list()
+        for item in features:
+            c = Counter(self.get_k_neighbors(item))
+            prediction = c.most_common(1)[0]
+            out.append(prediction)
+        return out
+        # raise NotImplementedError
 
 
 if __name__ == '__main__':
