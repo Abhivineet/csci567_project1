@@ -122,8 +122,8 @@ class HyperparameterTuner:
         best_distance_function = None
         best_model = None
         last_best_f1 = -1
-        for k in range(1,30,2):
-            for key in distance_funcs:
+        for key in distance_funcs:
+            for k in range(1,30,2):
                 model = KNN(k, distance_funcs[key])
                 model.train(x_train, y_train)
                 predictions = model.predict(x_val)
@@ -163,9 +163,9 @@ class HyperparameterTuner:
         best_scaler = None
         best_model = None
         last_best_f1 = -1
-        for k in range(1,30,2):
+        for scale in scaling_classes:
             for func in distance_funcs:
-                for scale in scaling_classes:
+                for k in range(1,30,2):
                     scaler = scaling_classes[scale]()
                     model = KNN(k, distance_funcs[func])
                     scaled_x_train = scaler(x_train)

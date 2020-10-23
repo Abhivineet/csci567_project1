@@ -68,7 +68,7 @@ class KNN:
         out = list()
         for item in features:
             c = Counter(self.get_k_neighbors(item))
-            prediction = c.most_common(1)[0]
+            prediction = c.most_common(1)[0][0]
             out.append(prediction)
         return out
         # raise NotImplementedError
