@@ -179,6 +179,27 @@ class HyperparameterTuner:
                         best_model = model
                         best_scaler = scale
                         last_best_f1 = f1
+                    # if f1 == last_best_f1:
+                    #     if best_scaler!=scale:
+                    #         if scale == "min_max_scale":
+                    #             best_k = k
+                    #             best_distance_function = func
+                    #             best_model = model
+                    #             best_scaler = scale
+                    #             last_best_f1 = f1
+                    #     elif best_distance_function!=func:
+                    #         if func=="euclidean":
+                    #             best_k = k
+                    #             best_distance_function = func
+                    #             best_model = model
+                    #             best_scaler = scale
+                    #             last_best_f1 = f1
+                    #         if func == "Minkowski" and best_distance_function=="cosine_dist":
+                    #             best_k = k
+                    #             best_distance_function = func
+                    #             best_model = model
+                    #             best_scaler = scale
+                    #             last_best_f1 = f1
 
         self.best_k = best_k
         self.best_distance_function = best_distance_function
