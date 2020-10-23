@@ -121,7 +121,7 @@ class HyperparameterTuner:
         best_k = None
         best_distance_function = None
         best_model = None
-        last_best_f1 = 0
+        last_best_f1 = -1
         for k in range(1,30,2):
             for key in distance_funcs:
                 model = KNN(k, distance_funcs[key])
@@ -132,6 +132,7 @@ class HyperparameterTuner:
                     best_k = k
                     best_distance_function = distance_funcs[key]
                     best_model = model
+                    last_best_f1=f1
 
         self.best_k = best_k
         self.best_distance_function = best_distance_function
@@ -161,13 +162,30 @@ class HyperparameterTuner:
         best_distance_function = None
         best_scaler = None
         best_model = None
-        last_best_f1 = 0
-        
-        self.best_k = None
-        self.best_distance_function = None
-        self.best_scaler = None
-        self.best_model = None
-        raise NotImplementedError
+        last_best_f1 = -1
+        for k in range(1,30,2):
+            for func in distance_funcs:
+                for scale in scaling_classes:
+                    scaler = scaling_classes[scale]()
+                    model = KNN(k, distance_funcs[func])
+                    scaled_x_train = scaler(x_train)
+                    model.train(scaled_x_train,y_train)
+                    scaled_x_val = scaler(x_val)
+                    predictions = model.predict(scaled_x_val)
+                    f1 = f1_score(y_val, predictions)
+                    if f1 > last_best_f1:
+                        best_k = k
+                        best_distance_function = distance_funcs[func]
+                        best_model = model
+                        best_scaler = scaling_classes[scale]
+                        last_best_f1 = f1
+
+        self.best_k = best_k
+        self.best_distance_function = best_distance_function
+        self.best_scaler = best_scaler
+        self.best_model = best_model
+
+        # raise NotImplementedError
 
 
 class NormalizationScaler:
