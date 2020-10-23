@@ -49,9 +49,9 @@ class Distances:
         """
         point1 = np.asarray(point1)
         point2 = np.asarray(point2)
-        sub = np.subtract(point1, point2)
+        sub = abs(np.subtract(point1, point2))
         sub = sub**3
-        out = (np.sum(sub))**(1/3.0)
+        out = np.cbrt(np.sum(sub))
         return out
         # raise NotImplementedError
 
@@ -130,7 +130,7 @@ class HyperparameterTuner:
                 f1 = f1_score(y_val, predictions)
                 if f1>last_best_f1:
                     best_k = k
-                    best_distance_function = distance_funcs[key]
+                    best_distance_function = key
                     best_model = model
                     last_best_f1=f1
 
@@ -175,9 +175,9 @@ class HyperparameterTuner:
                     f1 = f1_score(y_val, predictions)
                     if f1 > last_best_f1:
                         best_k = k
-                        best_distance_function = distance_funcs[func]
+                        best_distance_function = func
                         best_model = model
-                        best_scaler = scaling_classes[scale]
+                        best_scaler = scale
                         last_best_f1 = f1
 
         self.best_k = best_k
@@ -235,14 +235,9 @@ class MinMaxScaler:
         :param features: List[List[float]]
         :return: List[List[float]]
         """
-        out = []
-        for feature in features:
-            feature = np.asarray(feature)
-            amax = np.amax(feature)
-            amin = np.amin(feature)
-            if amin==amax:
-                out.append(feature*0)
-            else:
-                out.append((feature-amin)/(amax-amin))
-        return out
+        features = np.asarray(features, dtype='float')
+        for i in range(len(features[0])):
+            features[:,i] = (features[:,i] - features[:,i].min())/(features[:,i].max() - features[:,i].min())
+        return features
+
         # raise NotImplementedError
