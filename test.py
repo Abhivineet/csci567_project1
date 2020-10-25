@@ -16,15 +16,15 @@ def main():
 
     x_train, y_train, x_val, y_val, x_test, y_test = data_processing()
 
-    print('x_train shape = ', x_train.shape)
-    print('y_train shape = ', y_train.shape)
-
-    tuner_without_scaling_obj = HyperparameterTuner()
-    tuner_without_scaling_obj.tuning_without_scaling(distance_funcs, x_train, y_train, x_val, y_val)
-
-    print("**Without Scaling**")
-    print("k =", tuner_without_scaling_obj.best_k)
-    print("distance function =", tuner_without_scaling_obj.best_distance_function)
+    # print('x_train shape = ', x_train.shape)
+    # # print('y_train shape = ', y_train.shape)
+    # #
+    # # tuner_without_scaling_obj = HyperparameterTuner()
+    # # tuner_without_scaling_obj.tuning_without_scaling(distance_funcs, x_train, y_train, x_val, y_val)
+    # #
+    # # print("**Without Scaling**")
+    # # print("k =", tuner_without_scaling_obj.best_k)
+    # # print("distance function =", tuner_without_scaling_obj.best_distance_function)
 
     tuner_with_scaling_obj = HyperparameterTuner()
     tuner_with_scaling_obj.tuning_with_scaling(distance_funcs, scaling_classes, x_train, y_train, x_val, y_val)
