@@ -164,13 +164,13 @@ class HyperparameterTuner:
         best_model = None
         last_best_f1 = -1
         for scale in scaling_classes:
+            scaler = scaling_classes[scale]()
+            scaled_x_train = scaler(x_train)
+            scaled_x_val = scaler(x_val)
             for func in distance_funcs:
-                for k in range(1,30,2):
-                    scaler = scaling_classes[scale]()
+                for k in range(1,min(30,len(y_train)+1),2):
                     model = KNN(k, distance_funcs[func])
-                    scaled_x_train = scaler(x_train)
                     model.train(scaled_x_train,y_train)
-                    scaled_x_val = scaler(x_val)
                     predictions = model.predict(scaled_x_val)
                     f1 = f1_score(y_val, predictions)
                     if f1 > last_best_f1:

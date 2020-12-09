@@ -47,7 +47,7 @@ class KNN:
         for i in range(len(self.features)):
             dist = self.distance_function(self.features[i], point)
             n_tuples.append((dist, self.labels[i]))
-        n_tuples.sort()
+        n_tuples = sorted(n_tuples, key=lambda x: x[0])
         k_tuples = n_tuples[:self.k]
         for item in k_tuples:
             out.append(item[1])
